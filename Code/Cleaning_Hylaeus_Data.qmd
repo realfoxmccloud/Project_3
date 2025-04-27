@@ -84,4 +84,108 @@ colnames(observations_raw)
 ```
 
 # Cleaning Steps
-[...]
+
+## 1. Create Datetime Column
+
+```{r}
+# Combine Date and Timestamp into one Datetime field
+observations_clean <- observations_raw %>%
+  mutate(
+    Datetime = parse_datetime(paste(Date, Timestamp), format = "%m%d%y %I:%M %p")
+  )
+
+# Check if the Datetime column looks correct
+head(observations_clean$Datetime)
+```
+
+**Explanation:** Combining date and time into one column makes it easier to sort and filter observations later.
+
+## 2. Create Boolean Flags from Text
+
+```{r}
+# Create logical columns based on keyword searches
+observations_clean <- observations_clean %>%
+  mutate(
+    Photo_Taken = if_else(str_detect(tolower(paste(Detail, Additional_Notes)), "photo|filmed|picture|video"), TRUE, FALSE),
+    Species_Sighted = if_else(str_detect(tolower(paste(Detail, Additional_Notes)), "sighting|seen|observed|found"), TRUE, FALSE),
+    Observation_Noted = if_else(str_detect(tolower(paste(Detail, Additional_Notes)), "observation|observed|noted|detected"), TRUE, FALSE)
+  )
+
+# Confirm new columns are added
+head(observations_clean[, c("Photo_Taken", "Species_Sighted", "Observation_Noted")])
+```
+
+**Explanation:** Here, we combine `Detail` and `Additional_Notes` and search for keywords that suggest a photo, sighting, or general observation.
+
+- `tolower()` makes the text lowercase to avoid missing matches like "Photo" vs "photo".
+- `str_detect()` checks if any keywords are present.
+
+## 3. Handle Missing Values
+
+```{r}
+# Summarize temperature to see missing values
+summary(observations_clean$`Temperature (°F)`)
+
+# Check missing Wind Notes and Wind Direction
+sum(is.na(observations_clean$`Wind Notes`))
+sum(is.na(observations_clean$`Wind Direction`))
+```
+
+**Explanation:** We are not filling or deleting missing values here — documenting them preserves important information about observation gaps.
+
+## 4. Reorder Columns for Clarity
+
+```{r}
+# Reorganizing the columns to prioritize key fields
+observations_clean <- observations_clean %>%
+  select(Datetime, Date, Timestamp, Category, Detail, Additional_Notes,
+         Photo_Taken, Species_Sighted, Observation_Noted,
+         `Temperature (°F)`, `Wind Direction`, `Wind Notes`)
+
+# Preview the reorganized data
+head(observations_clean)
+```
+
+# Saving Cleaned Data
+
+```{r}
+# Save as CSV
+write.csv(observations_clean, "Data/Processed_data/Hylaeus_Observations_Cleaned.csv", row.names = FALSE)
+
+# Save as RDS (R's internal data format)
+saveRDS(observations_clean, "Data/Processed_data/Hylaeus_Observations_Cleaned.rds")
+```
+
+**Explanation:**
+- `.csv` is easy to open and share.
+- `.rds` preserves R-specific formatting and is better for analysis inside R later.
+
+# Data Dictionary
+
+| Variable | Description |
+|:--|:--|
+| Datetime | Combined date and time of observation |
+| Date | Date of observation (from sheet name) |
+| Timestamp | Time of observation (as recorded) |
+| Category | General category of observation (e.g., Fauna, Environmental Conditions) |
+| Detail | Specific description of the observation |
+| Additional_Notes | Extra notes recorded in the field |
+| Photo_Taken | TRUE if photo or filming mentioned |
+| Species_Sighted | TRUE if a species was sighted or mentioned |
+| Observation_Noted | TRUE if an observation was specifically noted |
+| Temperature (°F) | Recorded temperature (if taken) |
+| Wind Direction | Recorded wind direction (if taken) |
+| Wind Notes | Extra notes about wind patterns |
+
+
+---
+
+# Final Notes
+
+- Always **clean data programmatically**, not manually, to preserve reproducibility.
+- Missing values are natural in field observations; documenting them is important.
+- Logical (TRUE/FALSE) flags make it easier to group and summarize types of observations later.
+- **Good habits:** Check your work after big steps by using `head()`, `str()`, and `list.files()` to confirm results.
+
+Good luck with your Hylaeus research! 
+
