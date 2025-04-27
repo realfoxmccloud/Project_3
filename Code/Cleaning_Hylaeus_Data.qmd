@@ -1,0 +1,87 @@
+---
+title: "Cleaning Hylaeus Observation Data"
+format: html
+editor: visual
+---
+
+# Introduction
+
+This script will walk through cleaning raw observation data collected during Hylaeus (native bee) fieldwork. 
+
+This process is designed for beginners, with clear steps and explanations for each package and function used. We are focusing on making qualitative observations more organized for mixed-methods research.
+
+# Loading Required Libraries
+
+```{r}
+# Install packages if needed (uncomment and run if necessary)
+# install.packages("readxl")
+# install.packages("dplyr")
+# install.packages("stringr")
+# install.packages("lubridate")
+
+# Load the libraries
+library(readxl)    # For reading Excel files
+library(dplyr)     # For data manipulation
+library(stringr)   # For finding keywords in text
+library(lubridate) # For working with dates and times
+```
+
+# Setting the Working Directory
+
+This project uses **relative paths**, which means R looks for files starting from the current working directory.
+
+Before running the code, make sure your working directory is set to the root folder of the project.  
+You can check your current working directory by running:
+
+```{r}
+getwd()
+```
+
+If needed, you can list files in your working directory using:
+
+```{r}
+list.files()
+```
+
+This is helpful to double-check that your folders and files are organized correctly.
+
+The Excel file should be stored at:
+
+```
+Data/Raw_data/Kaʻena_Hylaeus Data Observations (Grouped).xlsx
+```
+
+If your working directory is correct, the loading step below will work without any changes.
+
+# Load the Raw Data
+
+```{r}
+# Load all sheets from the Excel file
+excel_file <- "Data/Raw_data/Kaʻena_Hylaeus Data Observations (Grouped).xlsx"
+sheet_names <- excel_sheets(excel_file)
+
+# Read in all sheets, adding a 'Date' column based on the sheet name
+data_list <- lapply(sheet_names, function(sheet) {
+  read_excel(excel_file, sheet = sheet) %>%
+    mutate(Date = sheet)  # Add the sheet name as a Date column
+})
+
+# Combine all sheets into one big dataframe
+observations_raw <- bind_rows(data_list)
+
+# Check the first few rows to confirm it loaded properly
+head(observations_raw)
+```
+
+# Initial Inspection
+
+```{r}
+# Peek at the data structure
+str(observations_raw)
+
+# Check the column names
+colnames(observations_raw)
+```
+
+# Cleaning Steps
+[...]
