@@ -48,6 +48,13 @@ sheet_dates <- parsed_dates[!bad_sheets]
 
 # Step 3: Read in all sheets, tagging each observation with its respective date
 # Timestamp conversion included to handle Excel's numeric format reliably
+# Normalize Timestamp column:
+# Excel sometimes stores time as a fractional numeric value (e.g., 0.5 = 12:00 PM).
+# This block checks whether the column exists, and if so, whether it’s numeric.
+# If it's numeric, we convert it to a readable time string using Excel's origin date (1899-12-30).
+# If it's already a character (e.g., "11:30 AM"), we keep it as-is.
+# If the column is missing entirely, we assign it as NA so the sheet can still be processed.
+
 
 data_list <- lapply(seq_along(sheet_names), function(i) {
   df <- read_excel(excel_file, sheet = sheet_names[i])
