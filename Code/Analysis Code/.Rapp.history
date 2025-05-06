@@ -1,0 +1,341 @@
+# Hylaeus_Observation_Analysis.R#
+# This script performs basic analysis of cleaned Hylaeus observation data.#
+#
+# Load required libraries#
+library(dplyr)#
+library(ggplot2)#
+library(readr)#
+library(lubridate)#
+#
+# Load the cleaned dataset (assumes script is run from /Code/)#
+data <- read_csv("../Data/Processed_data/Hylaeus_Observations_Cleaned.csv")#
+#
+# Step 1: Combine Date and Timestamp into a unified datetime column#
+data <- data %>%#
+  mutate(#
+    Datetime = parse_date_time(paste(Date, Timestamp), orders = "ymd IMp")#
+  )#
+#
+# Step 2: Summarize number of observations per day#
+daily_counts <- data %>%#
+  count(Date, name = "Observations")#
+#
+# Step 3: Plot observations per day#
+plot_daily <- ggplot(daily_counts, aes(x = Date, y = Observations)) +#
+  geom_line() +#
+  geom_point() +#
+  labs(title = "Daily Observation Counts", x = "Date", y = "Number of Observations") +#
+  theme_minimal()#
+#
+# Step 4: Summarize and plot categories#
+category_counts <- data %>%#
+  count(Category, sort = TRUE)#
+#
+plot_category <- ggplot(category_counts, aes(x = reorder(Category, n), y = n)) +#
+  geom_col(fill = "steelblue") +#
+  coord_flip() +#
+  labs(title = "Observations by Category", x = "Category", y = "Count") +#
+  theme_minimal()#
+#
+# Step 5: Keyword-flagged summaries#
+keyword_summary <- data %>%#
+  summarise(#
+    Total_Observations = n(),#
+    Photo_Taken = sum(Photo_Taken, na.rm = TRUE),#
+    Species_Sighted = sum(Species_Sighted, na.rm = TRUE),#
+    Observation_Noted = sum(Observation_Noted, na.rm = TRUE)#
+  )#
+#
+print(keyword_summary)#
+#
+# Optionally save plots#
+# ggsave("../Outputs/Daily_Observation_Counts.png", plot_daily, width = 8, height = 5)#
+# ggsave("../Outputs/Category_Distribution.png", plot_category, width = 8, height = 5)#
+#
+# Display plots#
+print(plot_daily)#
+print(plot_category)
+# Hylaeus_Observation_Analysis.R#
+# This script performs basic analysis of cleaned Hylaeus observation data.#
+#
+# Clear environment to prevent object conflicts#
+rm(list = ls())#
+#
+# Load required libraries#
+library(dplyr)#
+library(ggplot2)#
+library(readr)#
+library(lubridate)#
+library(here)#
+#
+# Load the cleaned dataset#
+data_path <- here("Data", "Processed_data", "Hylaeus_Observations_Cleaned.csv")#
+hylaeus_data <- read_csv(data_path)#
+#
+# Step 1: Combine Date and Timestamp into a unified datetime column#
+hylaeus_data <- hylaeus_data %>%#
+  mutate(#
+    Datetime = parse_date_time(paste(Date, Timestamp), orders = "ymd IMp")#
+  )#
+#
+# Step 2: Summarize number of observations per day#
+daily_counts <- hylaeus_data %>%#
+  count(Date, name = "Observations")#
+#
+# Step 3: Plot observations per day#
+plot_daily <- ggplot(daily_counts, aes(x = Date, y = Observations)) +#
+  geom_line() +#
+  geom_point() +#
+  labs(title = "Daily Observation Counts", x = "Date", y = "Number of Observations") +#
+  theme_minimal()#
+#
+# Step 4: Summarize and plot categories#
+category_counts <- hylaeus_data %>%#
+  count(Category, sort = TRUE)#
+#
+plot_category <- ggplot(category_counts, aes(x = reorder(Category, n), y = n)) +#
+  geom_col(fill = "steelblue") +#
+  coord_flip() +#
+  labs(title = "Observations by Category", x = "Category", y = "Count") +#
+  theme_minimal()#
+#
+# Step 5: Keyword-flagged summaries#
+keyword_summary <- hylaeus_data %>%#
+  summarise(#
+    Total_Observations = n(),#
+    Photo_Taken = sum(Photo_Taken, na.rm = TRUE),#
+    Species_Sighted = sum(Species_Sighted, na.rm = TRUE),#
+    Observation_Noted = sum(Observation_Noted, na.rm = TRUE)#
+  )#
+#
+print(keyword_summary)#
+#
+# Optionally save plots#
+# ggsave(here("Outputs", "Daily_Observation_Counts.png"), plot_daily, width = 8, height = 5)#
+# ggsave(here("Outputs", "Category_Distribution.png"), plot_category, width = 8, height = 5)#
+#
+# Display plots#
+print(plot_daily)#
+print(plot_category)
+# Clear the environment#
+rm(list = ls())#
+#
+# Load libraries#
+library(dplyr)#
+library(ggplot2)#
+library(readr)#
+library(lubridate)#
+library(here)#
+#
+# Load the cleaned dataset#
+data_path <- here("Data", "Processed_data", "Hylaeus_Observations_Cleaned.csv")#
+hylaeus_data <- read_csv(data_path)#
+#
+# Combine Date and Timestamp into unified datetime#
+hylaeus_data <- hylaeus_data %>%#
+  mutate(#
+    Datetime = parse_date_time(paste(Date, Timestamp), orders = "ymd IMp")#
+  )#
+#
+# Summarize observations per day#
+daily_counts <- hylaeus_data %>%#
+  count(Date, name = "Observations")#
+#
+# Plot daily counts#
+plot_daily <- ggplot(daily_counts, aes(x = Date, y = Observations)) +#
+  geom_line() +#
+  geom_point() +#
+  labs(title = "Daily Observation Counts", x = "Date", y = "Number of Observations") +#
+  theme_minimal()#
+#
+# Summarize and plot categories#
+category_counts <- hylaeus_data %>%#
+  count(Category, sort = TRUE)#
+#
+plot_category <- ggplot(category_counts, aes(x = reorder(Category, n), y = n)) +#
+  geom_col(fill = "steelblue") +#
+  coord_flip() +#
+  labs(title = "Observations by Category", x = "Category", y = "Count") +#
+  theme_minimal()#
+#
+# Keyword summary#
+keyword_summary <- hylaeus_data %>%#
+  summarise(#
+    Total_Observations = n(),#
+    Photo_Taken = sum(Photo_Taken, na.rm = TRUE),#
+    Species_Sighted = sum(Species_Sighted, na.rm = TRUE),#
+    Observation_Noted = sum(Observation_Noted, na.rm = TRUE)#
+  )#
+#
+# Output results#
+print(keyword_summary)#
+print(plot_daily)#
+print(plot_category)
+# Clear the environment#
+rm(list = ls())#
+#
+install.packages("here")#
+#
+# Load libraries#
+library(dplyr)#
+library(ggplot2)#
+library(readr)#
+library(lubridate)#
+library(here)#
+#
+# Load the cleaned dataset#
+data_path <- here("Data", "Processed_data", "Hylaeus_Observations_Cleaned.csv")#
+hylaeus_data <- read_csv(data_path)#
+#
+# Combine Date and Timestamp into unified datetime#
+hylaeus_data <- hylaeus_data %>%#
+  mutate(#
+    Datetime = parse_date_time(paste(Date, Timestamp), orders = "ymd IMp")#
+  )#
+#
+# Summarize observations per day#
+daily_counts <- hylaeus_data %>%#
+  count(Date, name = "Observations")#
+#
+# Plot daily counts#
+plot_daily <- ggplot(daily_counts, aes(x = Date, y = Observations)) +#
+  geom_line() +#
+  geom_point() +#
+  labs(title = "Daily Observation Counts", x = "Date", y = "Number of Observations") +#
+  theme_minimal()#
+#
+# Summarize and plot categories#
+category_counts <- hylaeus_data %>%#
+  count(Category, sort = TRUE)#
+#
+plot_category <- ggplot(category_counts, aes(x = reorder(Category, n), y = n)) +#
+  geom_col(fill = "steelblue") +#
+  coord_flip() +#
+  labs(title = "Observations by Category", x = "Category", y = "Count") +#
+  theme_minimal()#
+#
+# Keyword summary#
+keyword_summary <- hylaeus_data %>%#
+  summarise(#
+    Total_Observations = n(),#
+    Photo_Taken = sum(Photo_Taken, na.rm = TRUE),#
+    Species_Sighted = sum(Species_Sighted, na.rm = TRUE),#
+    Observation_Noted = sum(Observation_Noted, na.rm = TRUE)#
+  )#
+#
+# Output results#
+print(keyword_summary)#
+print(plot_daily)#
+print(plot_category)
+head(hylaeus_data$Date)#
+head(hylaeus_data$Timestamp)
+# Hylaeus_Observation_Analysis.R#
+# This script performs basic analysis of cleaned Hylaeus observation data.#
+#
+# Clear the environment#
+rm(list = ls())#
+# Need to install this most likely#
+install.packages("here")#
+#
+# Load required libraries#
+library(dplyr)#
+library(ggplot2)#
+library(readr)#
+library(lubridate)#
+#
+# Load the cleaned dataset#
+hylaeus_data <- read_csv("../Data/Processed_data/Hylaeus_Observations_Cleaned.csv")#
+#
+# Step 1: Construct Datetime column by combining Date + time-only part of Timestamp#
+hylaeus_data <- hylaeus_data %>%#
+  mutate(#
+    Datetime = ymd_hms(paste(Date, format(as.POSIXct(Timestamp), "%H:%M:%S")))#
+  )#
+#
+# Step 2: Summarize number of observations per day#
+daily_counts <- hylaeus_data %>%#
+  count(Date, name = "Observations")#
+#
+# Step 3: Plot observations per day#
+plot_daily <- ggplot(daily_counts, aes(x = Date, y = Observations)) +#
+  geom_line() +#
+  geom_point() +#
+  labs(title = "Daily Observation Counts", x = "Date", y = "Number of Observations") +#
+  theme_minimal()#
+#
+# Step 4: Summarize and plot categories#
+category_counts <- hylaeus_data %>%#
+  count(Category, sort = TRUE)#
+#
+plot_category <- ggplot(category_counts, aes(x = reorder(Category, n), y = n)) +#
+  geom_col(fill = "steelblue") +#
+  coord_flip() +#
+  labs(title = "Observations by Category", x = "Category", y = "Count") +#
+  theme_minimal()#
+#
+# Step 5: Keyword-flagged summaries#
+keyword_summary <- hylaeus_data %>%#
+  summarise(#
+    Total_Observations = n(),#
+    Photo_Taken = sum(Photo_Taken, na.rm = TRUE),#
+    Species_Sighted = sum(Species_Sighted, na.rm = TRUE),#
+    Observation_Noted = sum(Observation_Noted, na.rm = TRUE)#
+  )#
+#
+# Output results#
+print(keyword_summary)#
+print(plot_daily)#
+print(plot_category)#
+#
+# Optionally save plots#
+# ggsave("../Outputs/Daily_Observation_Counts.png", plot_daily, width = 8, height = 5)#
+# ggsave("../Outputs/Category_Distribution.png", plot_category, width = 8, height = 5)
+# Hylaeus_Observation_Analysis.R#
+# Run from: Project_3/Code/Analysis Code/#
+# Requires: Project_3/Data/Processed_data/Hylaeus_Observations_Cleaned.csv#
+#
+# --- Setup ---#
+rm(list = ls())  # Clear environment#
+#
+# Need to install this most likely#
+install.packages("here")#
+#
+# Load required packages#
+library(dplyr)#
+library(ggplot2)#
+library(readr)#
+library(lubridate)#
+#
+# --- Load Data ---#
+# Use relative path from "Analysis Code/" folder#
+hylaeus_data <- read_csv("../../Data/Processed_data/Hylaeus_Observations_Cleaned.csv")#
+#
+# --- Process Datetime ---#
+# Timestamp has full datetime, but date is separate — extract time only and join#
+hylaeus_data <- hylaeus_data %>%#
+  mutate(#
+    Datetime = ymd_hms(paste(Date, format(as.POSIXct(Timestamp), "%H:%M:%S")))#
+  )#
+#
+# --- Daily Summary ---#
+daily_counts <- hylaeus_data %>%#
+  count(Date, name = "Observations")#
+#
+plot_daily <- ggplot(daily_counts, aes(x = Date, y = Observations)) +#
+  geom_line() +#
+  geom_point() +#
+  labs(title = "Daily Observation Counts", x = "Date", y = "Number of Observations") +#
+  theme_minimal()#
+#
+# --- Category Summary ---#
+category_counts <- hylaeus_data %>%#
+  count(Category, sort = TRUE)#
+#
+plot_category <- ggplot(category_counts, aes(x = reorder(Category, n), y = n)) +#
+  geom_col(fill = "steelblue") +#
+  coord_flip() +#
+  labs(title = "Observations by Category", x = "Category", y = "Count") +#
+  theme_minimal()#
+#
+# --- Keyword Flag Summary ---#
+keyword_summary <- hylaeus_data %>
