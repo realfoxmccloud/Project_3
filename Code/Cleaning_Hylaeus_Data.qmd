@@ -11,7 +11,6 @@ This script will walk through cleaning raw observation data collected during Hyl
 
 This process is designed for beginners, with clear steps and explanations for each package and function used. We are focusing on making qualitative observations more organized for mixed-methods research.
 
-
 > 💡 **Tip:** While R can read `.xlsx` files with the `readxl` package, it's best practice to convert data to `.csv` for long-term reproducibility and stability. Excel files can become corrupted or change format, while `.csv` files are plain text and easier to version control or share.
 
 # Loading Required Libraries
@@ -24,19 +23,16 @@ This process is designed for beginners, with clear steps and explanations for ea
 # install.packages("lubridate")
 
 # Load the libraries
-
-
-# Cleaned R script from Cleaning_Hylaeus_Data.qmd (Final Fixed Version with Type Handling)
-# Use this for live demo or reproducible processing of Hylaeus observations
-
-# Load necessary libraries
 library(readxl)    # For reading Excel files
+# Note: readxl is used to read .xlsx files directly without needing Excel or Java dependencies.
 library(dplyr)     # For data manipulation
-library(lubridate) # For working with dates and times
-library(stringr)   # For keyword searches
+library(stringr)   # For finding keywords in notes and detail fields
+library(lubridate) # For date/time parsing and formatting
+```
 
-# Although readxl works fine for Excel, converting to .csv is recommended for archival and reproducibility.
+# Load and Clean the Raw Data
 
+```{r}
 # Define the path to the Excel file (relative path from /Code/ folder)
 excel_file <- "../Data/Raw_data/Kaʻena_Hylaeus Data Observations (Grouped).xlsx"
 
@@ -51,32 +47,49 @@ sheet_names <- sheet_names[!bad_sheets]
 sheet_dates <- parsed_dates[!bad_sheets]
 
 # Step 3: Read in all sheets, tagging each observation with its respective date
+# Timestamp conversion included to handle Excel's numeric format reliably
+
 data_list <- lapply(seq_along(sheet_names), function(i) {
-  read_excel(excel_file, sheet = sheet_names[i]) %>%
+  df <- read_excel(excel_file, sheet = sheet_names[i])
+
+  if ("Timestamp" %in% names(df)) {
+    if (is.numeric(df$Timestamp)) {
+      df$Timestamp <- format(as.POSIXct(df$Timestamp * 86400, origin = "1899-12-30", tz = "UTC"), "%I:%M %p")
+    } else {
+      df$Timestamp <- as.character(df$Timestamp)
+    }
+  } else {
+    df$Timestamp <- NA_character_
+  }
+
+  df %>%
     mutate(
       Date = sheet_dates[i],
-      Timestamp = as.character(Timestamp),
       `Temperature (°F)` = as.numeric(`Temperature (°F)`),
       `Wind Direction` = as.character(`Wind Direction`),
       `Wind Notes` = as.character(`Wind Notes`)
-    )
-})
-    mutate(
-      Date = sheet_dates[i],
-      Timestamp = as.character(Timestamp)  # normalize column type
     )
 })
 
 # Step 4: Combine into a single dataframe
 observations_raw <- bind_rows(data_list)
 
-# Step 5: Combine Date and Timestamp columns into one unified Datetime column
+# Step 5: Create fallback columns if missing
+if (!"Additional_Notes" %in% names(observations_raw)) {
+  observations_raw$Additional_Notes <- NA_character_
+}
+if (!"Detail" %in% names(observations_raw)) {
+  observations_raw$Detail <- NA_character_
+}
+
+# Step 6: Create unified datetime column
+# This combines parsed Date and time-format Timestamp into a single field
 observations_clean <- observations_raw %>%
   mutate(
     Datetime = parse_date_time(paste(Date, Timestamp), orders = "ymd IMp")
   )
 
-# Step 6: Create logical columns for keyword searches
+# Step 7: Add keyword flags for filtering and summary work
 observations_clean <- observations_clean %>%
   mutate(
     Photo_Taken = if_else(str_detect(tolower(paste(Detail, Additional_Notes)), "photo|filmed|picture|video"), TRUE, FALSE),
@@ -84,214 +97,18 @@ observations_clean <- observations_clean %>%
     Observation_Noted = if_else(str_detect(tolower(paste(Detail, Additional_Notes)), "observation|observed|noted|detected"), TRUE, FALSE)
   )
 
-# Step 7: Reorder columns for clarity
+# Step 8: Reorder columns for clarity
 observations_clean <- observations_clean %>%
   select(Datetime, Date, Timestamp, Category, Detail, Additional_Notes,
          Photo_Taken, Species_Sighted, Observation_Noted,
          `Temperature (°F)`, `Wind Direction`, `Wind Notes`)
 
-# Step 8: Create directory for output if it doesn’t exist
-dir.create("../Data/Processed_data", recursive = TRUE, showWarnings = FALSE)
-
-# Step 9: Save outputs
-write.csv(observations_clean, "../Data/Processed_data/Hylaeus_Observations_Cleaned.csv", row.names = FALSE)
-saveRDS(observations_clean, "../Data/Processed_data/Hylaeus_Observations_Cleaned.rds")
-
-library(readxl)    # For reading Excel files
-library(dplyr)     # For data manipulation
-library(stringr)   # For finding keywords in text
-library(lubridate) # For working with dates and times
+# Step 9: Save outputs to new location
+output_dir <- "../Data/Processed_data"
+dir.create(output_dir, showWarnings = FALSE, recursive = TRUE)
+write.csv(observations_clean, file.path(output_dir, "Hylaeus_Observations_Cleaned.csv"), row.names = FALSE)
+saveRDS(observations_clean, file.path(output_dir, "Hylaeus_Observations_Cleaned.rds"))
 ```
-
-# Setting the Working Directory
-
-This project uses **relative paths**, which means R looks for files starting from the current working directory.
-
-Before running the code, make sure your working directory is set to the root folder of the project.  
-You can check your current working directory by running:
-
-```{r}
-getwd()
-```
-
-If needed, you can list files in your working directory using:
-
-```{r}
-list.files()
-```
-
-This is helpful to double-check that your folders and files are organized correctly.
-
-The Excel file should be stored at:
-
-```
-Data/Raw_data/Kaʻena_Hylaeus Data Observations (Grouped).xlsx
-```
-
-If your working directory is correct, the loading step below will work without any changes.
-
-# Load the Raw Data
-
-```{r}
-# Load all sheets from the Excel file
-# Cleaned R script from Cleaning_Hylaeus_Data.qmd (Final Fixed Version with Type Handling)
-# Use this for live demo or reproducible processing of Hylaeus observations
-
-# Load necessary libraries
-library(readxl)    # For reading Excel files
-library(dplyr)     # For data manipulation
-library(lubridate) # For working with dates and times
-library(stringr)   # For keyword searches
-
-# Although readxl works fine for Excel, converting to .csv is recommended for archival and reproducibility.
-
-# Define the path to the Excel file (relative path from /Code/ folder)
-excel_file <- "../Data/Raw_data/Kaʻena_Hylaeus Data Observations (Grouped).xlsx"
-
-# Step 1: Get sheet names
-sheet_names <- excel_sheets(excel_file)
-
-# Step 2: Convert sheet names (assumed to be in MMDDYY format) to proper Date
-parsed_dates <- suppressWarnings(mdy(sheet_names))
-bad_sheets <- is.na(parsed_dates)
-print(sheet_names[bad_sheets])  # Optional: inspect bad sheet names
-sheet_names <- sheet_names[!bad_sheets]
-sheet_dates <- parsed_dates[!bad_sheets]
-
-# Step 3: Read in all sheets, tagging each observation with its respective date
-data_list <- lapply(seq_along(sheet_names), function(i) {
-  read_excel(excel_file, sheet = sheet_names[i]) %>%
-    mutate(
-      Date = sheet_dates[i],
-      Timestamp = as.character(Timestamp),
-      `Temperature (°F)` = as.numeric(`Temperature (°F)`),
-      `Wind Direction` = as.character(`Wind Direction`),
-      `Wind Notes` = as.character(`Wind Notes`)
-    )
-})
-    mutate(
-      Date = sheet_dates[i],
-      Timestamp = as.character(Timestamp)  # normalize column type
-    )
-})
-
-# Step 4: Combine into a single dataframe
-observations_raw <- bind_rows(data_list)
-
-# Step 5: Combine Date and Timestamp columns into one unified Datetime column
-observations_clean <- observations_raw %>%
-  mutate(
-    Datetime = parse_date_time(paste(Date, Timestamp), orders = "ymd IMp")
-  )
-
-# Step 6: Create logical columns for keyword searches
-observations_clean <- observations_clean %>%
-  mutate(
-    Photo_Taken = if_else(str_detect(tolower(paste(Detail, Additional_Notes)), "photo|filmed|picture|video"), TRUE, FALSE),
-    Species_Sighted = if_else(str_detect(tolower(paste(Detail, Additional_Notes)), "sighting|seen|observed|found"), TRUE, FALSE),
-    Observation_Noted = if_else(str_detect(tolower(paste(Detail, Additional_Notes)), "observation|observed|noted|detected"), TRUE, FALSE)
-  )
-
-# Step 7: Reorder columns for clarity
-observations_clean <- observations_clean %>%
-  select(Datetime, Date, Timestamp, Category, Detail, Additional_Notes,
-         Photo_Taken, Species_Sighted, Observation_Noted,
-         `Temperature (°F)`, `Wind Direction`, `Wind Notes`)
-
-# Step 8: Create directory for output if it doesn’t exist
-dir.create("../Data/Processed_data", recursive = TRUE, showWarnings = FALSE)
-
-# Step 9: Save outputs
-write.csv(observations_clean, "../Data/Processed_data/Hylaeus_Observations_Cleaned.csv", row.names = FALSE)
-saveRDS(observations_clean, "../Data/Processed_data/Hylaeus_Observations_Cleaned.rds")
-
-# Check the first few rows to confirm it loaded properly
-head(observations_raw)
-```
-
-# Initial Inspection
-
-```{r}
-# Peek at the data structure
-str(observations_raw)
-
-# Check the column names
-colnames(observations_raw)
-```
-
-# Cleaning Steps
-
-## 1. Create Datetime Column
-
-```{r}
-# Combine Date and Timestamp into one Datetime field
-observations_clean <- observations_raw %>%
-  mutate(
-    Datetime = parse_datetime(paste(Date, Timestamp), format = "%m%d%y %I:%M %p")
-  )
-
-# Check if the Datetime column looks correct
-head(observations_clean$Datetime)
-```
-
-**Explanation:** Combining date and time into one column makes it easier to sort and filter observations later.
-
-## 2. Create Boolean Flags from Text
-
-```{r}
-# Create logical columns based on keyword searches
-observations_clean <- observations_clean %>%
-  mutate(
-    Photo_Taken = if_else(str_detect(tolower(paste(Detail, Additional_Notes)), "photo|filmed|picture|video"), TRUE, FALSE),
-    Species_Sighted = if_else(str_detect(tolower(paste(Detail, Additional_Notes)), "sighting|seen|observed|found"), TRUE, FALSE),
-    Observation_Noted = if_else(str_detect(tolower(paste(Detail, Additional_Notes)), "observation|observed|noted|detected"), TRUE, FALSE)
-  )
-
-# Confirm new columns are added
-head(observations_clean[, c("Photo_Taken", "Species_Sighted", "Observation_Noted")])
-```
-
-**Explanation:** Here, we combine `Detail` and `Additional_Notes` and search for keywords that suggest a photo, sighting, or general observation.
-
-- `tolower()` makes the text lowercase to avoid missing matches like "Photo" vs "photo".
-- `str_detect()` checks if any keywords are present.
-
-## 3. Handle Missing Values
-
-```{r}
-# Summarize temperature to see missing values
-summary(observations_clean$`Temperature (°F)`)
-
-# Check missing Wind Notes and Wind Direction
-sum(is.na(observations_clean$`Wind Notes`))
-sum(is.na(observations_clean$`Wind Direction`))
-```
-
-**Explanation:** We are not filling or deleting missing values here — documenting them preserves important information about observation gaps.
-
-## 4. Reorder Columns for Clarity
-
-```{r}
-# Reorganizing the columns to prioritize key fields
-observations_clean <- observations_clean %>%
-  select(Datetime, Date, Timestamp, Category, Detail, Additional_Notes,
-         Photo_Taken, Species_Sighted, Observation_Noted,
-         `Temperature (°F)`, `Wind Direction`, `Wind Notes`)
-
-# Preview the reorganized data
-head(observations_clean)
-```
-
-# Saving Cleaned Data
-
-```{r}
-# Save as CSV
-write.csv(observations_clean, "Data/Processed_data/Hylaeus_Observations_Cleaned.csv", row.names = FALSE)
-
-# Save as RDS (R's internal data format)
-saveRDS(observations_clean, "Data/Processed_data/Hylaeus_Observations_Cleaned.rds")
-```
-
 **Explanation:**
 - `.csv` is easy to open and share.
 - `.rds` preserves R-specific formatting and is better for analysis inside R later.
