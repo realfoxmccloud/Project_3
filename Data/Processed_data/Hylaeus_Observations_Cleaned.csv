@@ -1,0 +1,68 @@
+"Category","Timestamp","Detail","Temperature (°F)","Wind Direction","Wind Notes","Additional Notes","Date","Datetime"
+"Environmental Conditions","1899-12-31 11:00:00","Arrival, mild cloud cover over ridge",74,"E94","Cross breeze","Clear over ocean",2024-12-23,NA
+"Environmental Conditions","1899-12-31 12:05:00","Clouds forming on horizon",NA,"E82","Toward rocks","Cumulus clouds appearing",2024-12-23,NA
+"Environmental Conditions","1899-12-31 13:07:00","Clouds stacked on horizon, none over point",NA,NA,NA,NA,2024-12-23,NA
+"Fauna","1899-12-31 11:43:00","Spider",NA,NA,NA,"Photo taken",2024-12-23,NA
+"Fauna","1899-12-31 12:08:00","Butterfly",NA,NA,NA,"Filmed earlier; second sighting",2024-12-23,NA
+"Fauna","1899-12-31 12:10:00","Honeybee",NA,NA,NA,"First seen since entrance",2024-12-23,NA
+"Fauna","1899-12-31 12:59:00","Flies, moths",NA,NA,NA,"Photos taken",2024-12-23,NA
+"Fauna","1899-12-31 13:29:00","Butterfly",NA,NA,NA,"Additional sighting",2024-12-23,NA
+"Fauna","1899-12-31 13:35:00","Pigeons",NA,NA,NA,"Observed",2024-12-23,NA
+"Fauna","1899-12-31 13:45:00","Sandpiper",NA,NA,NA,"Trailside birding",2024-12-23,NA
+"Fauna",NA,"Grasshopper or cricket",NA,NA,NA,"Unidentified insect",2024-12-23,NA
+"Flora",NA,"Ilima",NA,NA,NA,"Consistent throughout the trail; typically with Naupaka and Naio",2024-12-23,NA
+"Flora",NA,"Naupaka",NA,NA,NA,"Sparse; affected by wind exposure",2024-12-23,NA
+"Flora","1899-12-31 12:17:00","Naupaka",NA,NA,NA,"Denser further up trail; photos taken",2024-12-23,NA
+"Flora",NA,"Naio",NA,NA,NA,"More prevalent further down the trail",2024-12-23,NA
+"Site/Spatial","1899-12-31 12:08:00","Observation spot",NA,NA,NA,"Photo taken",2024-12-23,NA
+"Site/Spatial","1899-12-31 12:49:00","West-side observation spot",NA,NA,NA,"Photo log entry",2024-12-23,NA
+"Site/Spatial",NA,"Restoration area",NA,NA,NA,"Unclear boundaries; accessibility issues",2024-12-23,NA
+"Site/Spatial",NA,"Trail markers",NA,NA,NA,"More defined further up the trail",2024-12-23,NA
+"Site/Spatial",NA,"Reserve fence",NA,NA,NA,"Fenced due to rodents",2024-12-23,NA
+"Social",NA,"General visitor interaction",NA,NA,NA,"Minimal engagement; mostly white tourists",2024-12-23,NA
+"Environmental Conditions","1899-12-31 08:10:00","Start time, Christmas Eve, minimal foot traffic",NA,NA,"Very little breeze","No clouds over point, some on north horizon",2024-12-24,NA
+"Environmental Conditions","1899-12-31 08:21:00","Coastal sun exposure beginning",NA,NA,"Still calm","Clear sky, cumulus clouds visible north",2024-12-24,NA
+"Environmental Conditions","1899-12-31 09:15:00","Light breeze begins",NA,"Easterly","Picking up","Clouds forming near reserve, horizon visible",2024-12-24,NA
+"Environmental Conditions","1899-12-31 10:09:00","Sun hitting ridgeline",NA,"Easterly","Wind increased","Clouds increased on horizon",2024-12-24,NA
+"Environmental Conditions","1899-12-31 10:25:00","First notable cloud cover",NA,NA,NA,NA,2024-12-24,NA
+"Environmental Conditions","1899-12-31 10:40:00","Clouds settled more, ocean choppier",NA,NA,"Breeze picked up","Still minimal over point",2024-12-24,NA
+"Fauna","1899-12-31 08:38:00","Moth",NA,NA,NA,"First visible pollinator, in sunlight",2024-12-24,NA
+"Fauna","1899-12-31 08:40:00","Cardinals",NA,NA,NA,"Observed in tree, photo taken",2024-12-24,NA
+"Fauna","1899-12-31 08:56:00","Starlings, cardinals",NA,NA,NA,"Multiple sightings",2024-12-24,NA
+"Fauna","1899-12-31 09:23:00","Sweat bee (?)",NA,NA,NA,"Banded; similar to Beedrill; seen in sun",2024-12-24,NA
+"Fauna","1899-12-31 09:33:00","Honeybee",NA,NA,NA,"Identified, photo taken",2024-12-24,NA
+"Fauna","1899-12-31 10:00:00","Hylaeus (?)",NA,NA,NA,"Possible first confirmed sighting",2024-12-24,NA
+"Fauna","1899-12-31 10:02:00","Hylaeus",NA,NA,NA,"Public engagement; shared species details",2024-12-24,NA
+"Fauna","1899-12-31 10:35:00","Hylaeus",NA,NA,NA,"Uncertain ID, geo-tag suggested",2024-12-24,NA
+"Fauna",NA,"Wedge-tailed shearwaters",NA,NA,NA,"Seen flying offshore",2024-12-24,NA
+"Fauna",NA,"Butterflies & moths",NA,NA,NA,"Described patterns, multiple seen",2024-12-24,NA
+"Flora","1899-12-31 08:32:00","Blossoms",NA,NA,NA,"Notably more blossoms than 12/23",2024-12-24,NA
+"Flora","1899-12-31 08:32:00","Ilima",NA,NA,NA,"Definitely more Ilima across entire trail head",2024-12-24,NA
+"Flora","1899-12-31 09:00:00","Flowering",NA,NA,NA,"Fewer flowers in shaded sections of trail",2024-12-24,NA
+"Flora",NA,"Naupaka",NA,NA,NA,"More blossoms overall; possible blooming season",2024-12-24,NA
+"Flora",NA,"Naio",NA,NA,NA,"Same consideration; seasonal timing noted",2024-12-24,NA
+"Flora","1899-12-31 10:28:00","Naupaka",NA,NA,NA,"Noted dieback—questioning role of invasives",2024-12-24,NA
+"Site/Spatial",NA,"Pink markers",NA,NA,NA,"Noted near trail; unclear purpose",2024-12-24,NA
+"Site/Spatial",NA,"Trail/Reserve split",NA,NA,NA,"Ridge shaded vs. sunny trail; coastal vs. inland dynamic",2024-12-24,NA
+"Site/Spatial",NA,"Photo reference points",NA,NA,NA,"Images taken at 8:21, 9:15, 10:35",2024-12-24,NA
+"Site/Spatial",NA,"Spot documentation",NA,NA,NA,"Importance of repeat observation points",2024-12-24,NA
+"Site/Spatial",NA,"Moon phase?",NA,NA,NA,"Prompt to include in future data collection",2024-12-24,NA
+"Social","1899-12-31 10:02:00","Trail users asked questions",NA,NA,NA,"Shared Hylaeus info, engaged hikers",2024-12-24,NA
+"Social",NA,"General trail use",NA,NA,NA,"Very quiet; likely due to holiday",2024-12-24,NA
+"Environmental Conditions","0.4791666666666667","Arrival, overcast with cumulus clouds",NA,"~2° N","Slight breeze off ocean","Clouds over point and range",2024-12-27,NA
+"Environmental Conditions","0.5048611111111111","Cloud cover cleared at the point",NA,"N/NW","Breeze still present","—",2024-12-27,NA
+"Environmental Conditions","0.5277777777777778","Storm clouds forming over ridge/ocean",NA,"—","—","Visual shift in weather pattern",2024-12-27,NA
+"Environmental Conditions","0.55","Stronger wind recorded",NA,"~190° S","~10+ mph","Possibly shifting insect behavior",2024-12-27,NA
+"Fauna","0.5152777777777777","Butterflies + 2 Hylaeus observed pollinating",NA,"—","—","Video taken",2024-12-27,NA
+"Fauna","0.5215277777777778","3rd Hylaeus spotted",NA,"—","—","Moths and Hylaeus using same flower space",2024-12-27,NA
+"Fauna","0.5277777777777778","Hylaeus sighting",NA,"—","—","Active despite wind",2024-12-27,NA
+"Fauna","0.55","Female Hylaeus along coast",NA,"—","Windy; flying low","Possibly using naupaka for cover",2024-12-27,NA
+"Fauna","0.5555555555555556","Hylaeus and honeybee in same area",NA,"—","—","Honeybee on cup flowers; Hylaeus on naupaka",2024-12-27,NA
+"Flora","—","Ilima",NA,"—","—","High pollinator concentration; needs ID",2024-12-27,NA
+"Flora","—","Naupaka dense bloom",NA,"—","—","Clustered in Hylaeus activity zone",2024-12-27,NA
+"Flora","—","Naupaka sparser in surrounding area",NA,"—","—","Notably less blooming outside identified patch",2024-12-27,NA
+"Site/Spatial","—","Storm clouds forming over ridge and ocean",NA,"—","—","Shift in cloud cover noted",2024-12-27,NA
+"Site/Spatial","—","Concentrated flower patch with pollinator activity",NA,"—","—","Possibly key site for repeated observation",2024-12-27,NA
+"Site/Spatial","—","Localized naupaka bloom cluster",NA,"—","—","May be tied to microclimate or soil condition",2024-12-27,NA
+"Social","—","High foot traffic, mostly tourists",NA,"—","—","More crowded than previous observations",2024-12-27,NA
+"Social","—","""Tourist behavior"" noted",NA,"—","—","Minimal engagement again",2024-12-27,NA
