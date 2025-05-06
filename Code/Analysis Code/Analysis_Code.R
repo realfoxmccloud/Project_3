@@ -6,7 +6,6 @@
 rm(list = ls())  # Clear environment
 
 # Need to install this most likely
-install.packages("here")
 
 # Load required packages
 library(dplyr)
@@ -16,7 +15,8 @@ library(lubridate)
 
 # --- Load Data ---
 # Use relative path from "Analysis Code/" folder
-hylaeus_data <- read_csv("../../Data/Processed_data/Hylaeus_Observations_Cleaned.csv")
+hylaeus_data <- install.packages("here")
+read_csv("../../Data/Processed_data/Hylaeus_Observations_Cleaned.csv")
 
 # --- Process Datetime ---
 # Timestamp has full datetime, but date is separate — extract time only and join
